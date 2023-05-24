@@ -1,47 +1,18 @@
 const { default: axios } = require("axios");
 const { baseURL } = require("../config/config");
 
-const getUser = async (request, response, next) => {
-  response.setHeader("Access-Control-Allow-Origin", "*");
-  response.setHeader("Access-Control-Allow-Headers", "Content-Type");
-  response.setHeader("Access-Control-Allow-Credentials", true); // you
+const getToken = async (request, response, next) => {
+  const crendentials = "grant_type=client_credentials&scope=profile";
 
-  try {
-    axios({
-      method: "GET",
-      url: `${baseURL}/getmodules`,
-    })
-      .then(function (res) {
-        response.send({
-          message: res.data,
-          statusCode: res.status,
-          date: res.headers.date,
-        });
-      })
-      .catch(function (error) {
-        // handle error
-        console.log(error);
-      });
-  } catch (error) {
-    response.send({
-      message: "An error occured",
-    });
-  }
-};
-
-const postUsers = async (request, response, next) => {
-  response.setHeader("Access-Control-Allow-Origin", "*");
-  response.setHeader("Access-Control-Allow-Headers", "Content-Type");
-  response.setHeader("Access-Control-Allow-Credentials", true); // you
-
-  let body = request.body;
-  //let data = request.body;
-  console.log(body);
-  // try {
   axios({
     method: "POST",
-    url: `${baseURL}/login`,
-    data: body,
+    url: "https://apps.qa.interswitchng.com/passport/oauth/token",
+    data: crendentials,
+    headers: {
+      Authorization:
+        "Basic SUtJQTA2NTNEM0JCQkYwMDE2QTU0RTExNjkzNzYwNkJCQUNCN0E2NkE3RUY6K0hBQlRIUDV5Q0NSV3FZd3JQUXFFWmEvbUxmMlRZSmtWQjB0OWZoSjZPST0=",
+      "content-type": "application/x-www-form-urlencoded",
+    },
   })
     .then(function (res) {
       response.send({
@@ -56,4 +27,4 @@ const postUsers = async (request, response, next) => {
     });
 };
 
-module.exports = { getUser, postUsers };
+module.exports = { getToken };
